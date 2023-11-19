@@ -86,7 +86,7 @@
 <div class="cart-container">
     {% for item in cart_items %}
         <div class="cart-item">
-            <img src="{% if item.product.photo %}{{ item.product.photo.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" alt="{{ item.product.name }}">
+            <img class="product-image" src="{% if product.photo %}{{ product.img_url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" alt="{{ product.name }}">
             <div class="cart-item-details">
                 <h3>{{ item.product.name }}</h3>
                 <p>{{ item.product.description }}</p>

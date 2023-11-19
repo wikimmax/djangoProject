@@ -56,7 +56,7 @@
 </style>
 
 <div class="product-detail-container">
-    <img src="{% if product.photo %}{{ product.photo.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" alt="{{ product.name }}" class="product-image">
+    <img class="product-image" src="{% if product.photo %}{{ product.img_url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" alt="{{ product.name }}">
 
     <div class="product-info">
         <h2>{{ product.name }}</h2>
