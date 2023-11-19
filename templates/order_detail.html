@@ -1,0 +1,8 @@
+<h2>Zamówienie nr {{ order.id }}</h2>
+<ul>
+    {% for item in order.orderitem_set.all %}
+        <li>
+            {{ item.product.name }} (Ilość: {{ item.quantity }})
+        </li>
+    {% endfor %}
+</ul>

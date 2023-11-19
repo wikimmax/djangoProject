@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}My Shop{% endblock %}</title>
+    {% load i18n %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            justify-content: center;
+            align-items: center;
+        }
+
+        nav ul li {
+            padding: 0 10px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .auth-link {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            background: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .auth-link:hover {
+            color: #ccc;
+            text-decoration: underline;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="{% url 'index' %}">{% trans 'Strona Główna' %}</a></li>
+            <li><a href="{% url 'product_list' %}">{% trans 'Produkty' %}</a></li>
+            {% if request.user.is_authenticated %}
+                <li><a href="{% url 'browse_orders' %}">{% trans 'Moje Zamówienia' %}</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <div>
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'cart_detail' %}" class="auth-link">
+                {% trans 'Koszyk' %} {% if cart_item_count > 0 %}({{ cart_item_count }}){% endif %}
+            </a>
+            <a href="{% url 'logout' %}" class="auth-link">{% trans 'Wyloguj' %}</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="auth-link">{% trans 'Zaloguj' %}</a>
+        {% endif %}
+    </div>
+</header>
+
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+
+<footer>
+    &copy; 2023 My Shop. Wszelkie prawa zastrzeżone.
+</footer>
+</body>
+</html>

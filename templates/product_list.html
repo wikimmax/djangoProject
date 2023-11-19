@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}
+  {% trans "Lista Produktów" %} - My Shop
+{% endblock title %}
+
+{% block content %}
+<style>
+    .products-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+    .product-card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        width: 300px; /* Set a fixed width for each product */
+        transition: box-shadow 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        text-decoration: none; /* Removes underline from links */
+        color: inherit; /* Ensures text inherits color from parent */
+    }
+    .product-card:hover {
+        box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+        text-decoration: none; /* Optional: Removes text underline on hover */
+    }
+    .product-image {
+        width: 100%; /* Make the image take up the full width of the card */
+        height: 200px; /* Set a fixed height for the image */
+        object-fit: cover; /* Cover the area without stretching the image */
+    }
+    .product-info {
+        padding: 15px;
+    }
+    .product-info h3 {
+        margin-top: 0;
+    }
+    .product-info p {
+        margin: 0;
+    }
+    .product-info .price {
+        color: #017cff;
+        font-weight: bold;
+    }
+</style>
+
+<h2>{% trans "Nasze Produkty" %}</h2>
+<div class="products-container">
+    {% for product in products %}
+        <a href="{% url 'product_detail' product.pk %}" class="product-card">
+            <img src="{% if product.photo %}{{ product.photo.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" alt="{{ product.name }}" class="product-image">
+            <div class="product-info">
+                <h3>{{ product.name }}</h3>
+                <p>{{ product.description }}</p>
+                <p class="price">{{ product.price }} zł</p>
+            </div>
+        </a>
+    {% empty %}
+        <p>{% trans "Brak produktów." %}</p>
+    {% endfor %}
+</div>
+{% endblock content %}

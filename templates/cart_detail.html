@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}
+  {% trans "Twój Koszyk" %} - My Shop
+{% endblock title %}
+
+{% block content %}
+<style>
+    .cart-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-direction: column;
+        padding: 2em;
+    }
+    .cart-item {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 1em;
+        margin: 1em;
+        width: 80%; /* Adjust width as needed */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
+    }
+    .cart-item:hover {
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    }
+    .cart-item h3 {
+        margin: 0;
+    }
+    .cart-item p {
+        margin: 0.5em 0;
+    }
+    .place-order-btn {
+        padding: 10px 20px;
+        background-color: #017cff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        text-decoration: none;
+        display: inline-block;
+    }
+    .place-order-btn:hover {
+        background-color: #0056b3;
+    }
+    .cart-item img {
+        width: 100px; /* Adjust as needed */
+        height: 100px; /* Adjust as needed */
+        object-fit: cover;
+        margin-right: 20px;
+    }
+    .remove-item-form {
+        margin-left: 20px;
+    }
+</style>
+
+<div class="cart-container">
+    {% for item in cart_items %}
+        <div class="cart-item">
+            <img src="{% if item.product.photo %}{{ item.product.photo.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" alt="{{ item.product.name }}">
+            <div>
+                <h3>{{ item.product.name }}</h3>
+                <p>{{ item.product.description }}</p>
+                <p>{% trans "Ilość" %}: {{ item.quantity }}</p>
+                <p>{% trans "Cena" %}: {{ item.product.price }} zł</p>
+            </div>
+            <form action="{% url 'remove_from_cart' item.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit">{% trans "Usuń" %}</button>
+            </form>
+        </div>
+    {% empty %}
+        <p>{% trans "Twój koszyk jest pusty." %}</p>
+    {% endfor %}
+</div>
+
+<a href="{% url 'place_order' %}">{% trans "Złóż zamówienie" %}</a>
+
+{% endblock content %}

@@ -1,0 +1,13 @@
+<!-- Example of browse_orders.html -->
+<h2>My Orders</h2>
+<ul>
+    {% for order in orders %}
+    <li>
+        <strong>Order ID:</strong> {{ order.id }} <br>
+        <strong>Order Date:</strong> {{ order.created_at }} <br>
+        <!-- Add more details as needed -->
+    </li>
+    {% empty %}
+    <li>No orders found.</li>
+    {% endfor %}
+</ul>

@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}
+  {{ product.name }} - {% trans "My Shop" %}
+{% endblock title %}
+
+{% block content %}
+<style>
+    .product-detail-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2em 0;
+    }
+    .product-image {
+        max-width: 300px; /* Adjust width as needed */
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 1em;
+        transition: transform 0.3s ease;
+    }
+    .product-info {
+        text-align: center;
+    }
+    .product-info h2 {
+        color: #333;
+        margin-bottom: 0.5em;
+    }
+    .product-info p {
+        color: #555;
+        margin-bottom: 0.5em;
+    }
+    .product-info .price {
+        color: #017cff;
+        font-weight: bold;
+        font-size: 1.5em;
+        margin-bottom: 1em;
+    }
+    .add-to-cart-btn {
+        padding: 10px 20px;
+        background-color: #5cb85c;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        text-decoration: none;
+        display: inline-block;
+    }
+    .add-to-cart-btn:hover {
+        background-color: #4cae4c;
+    }
+</style>
+
+<div class="product-detail-container">
+    <img src="{% if product.photo %}{{ product.photo.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" alt="{{ product.name }}" class="product-image">
+
+    <div class="product-info">
+        <h2>{{ product.name }}</h2>
+        <p>{{ product.description }}</p>
+        <p class="price">{% trans "Cena" %}: {{ product.price }} zł</p>
+        <a href="{% url 'add_to_cart' product.pk %}" class="add-to-cart-btn">{% trans "Dodaj do koszyka" %}</a>
+    </div>
+</div>
+
+{% endblock content %}

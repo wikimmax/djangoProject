@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% load static %}  <!-- Load static if you need to reference static files -->
+
+{% block title %}Strona Główna - My Shop{% endblock %}
+
+{% block content %}
+<style>
+    .hero {
+        background-image: url('{% static "images/homeImage.png" %}'); /* Replace with your hero image path */
+        background-size: cover;
+        background-position: center;
+        color: #fff;
+        text-align: center;
+        height: 90vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .hero h1 {
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
+    }
+    .hero p {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    .hero a {
+        text-decoration: none;
+        background-color: rgba(255, 255, 255, 0.8);
+        color: #333;
+        padding: 1rem 2rem;
+        border-radius: 2rem;
+        transition: background-color 0.3s, transform 0.3s;
+        font-weight: bold;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        border: none;
+        outline: none;
+        cursor: pointer;
+    }
+    .hero a:hover {
+        background-color: rgba(255, 255, 255, 0.9);
+        transform: translateY(-5px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+    .content-section {
+        padding: 2rem;
+        text-align: center;
+    }
+    .content-section h2 {
+        color: #333;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+    .content-section p {
+        color: #666;
+        line-height: 1.6;
+    }
+    /* Add additional styles as needed */
+</style>
+
+<div class="hero">
+    <h1>Witaj w My Shop!</h1>
+    <p>Twój ulubiony sklep z odzieżą.</p>
+    <a href="{% url 'product_list' %}">Zobacz nasze produkty</a>
+</div>
+{% endblock %}

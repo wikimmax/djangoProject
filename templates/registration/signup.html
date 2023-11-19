@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+
+{% block content %}
+<style>
+    .signup-container {
+        width: 100%;
+        max-width: 320px;
+        margin: 50px auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .signup-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .signup-container form {
+        display: flex;
+        flex-direction: column;
+    }
+    .signup-container label {
+        margin-top: 10px;
+    }
+    .signup-container input {
+        padding: 10px;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    .signup-container button {
+        padding: 10px;
+        margin-top: 20px;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .signup-container button:hover {
+        background-color: #555;
+    }
+    .tooltip {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+    }
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 280px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 10px;
+        position: absolute;
+        z-index: 1;
+        bottom: 150%;
+        left: 50%;
+        margin-left: -140px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+</style>
+
+<div class="signup-container">
+    <h2>{% trans 'Sign Up' %}</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="id_username">{% trans 'Username' %}:</label>
+        <input type="text" name="username" id="id_username" required>
+
+        <label for="id_password1">{% trans 'Password' %}:
+            <span class="tooltip">?
+                <span class="tooltiptext">
+                    {% trans 'Your password can’t be too similar to your other personal information.' %}<br>
+                    {% trans 'Your password must contain at least 8 characters.' %}<br>
+                    {% trans 'Your password can’t be a commonly used password.' %}<br>
+                    {% trans 'Your password can’t be entirely numeric.' %}
+                </span>
+            </span>
+        </label>
+        <input type="password" name="password1" id="id_password1" required>
+
+        <label for="id_password2">{% trans 'Password confirmation' %}:</label>
+        <input type="password" name="password2" id="id_password2" required>
+
+        <button type="submit">{% trans 'Sign up' %}</button>
+    </form>
+</div>
+{% endblock %}
