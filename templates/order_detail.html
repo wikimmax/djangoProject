@@ -1,8 +1,59 @@
-<h2>Zamówienie nr {{ order.id }}</h2>
-<ul>
-    {% for item in order.orderitem_set.all %}
-        <li>
-            {{ item.product.name }} (Ilość: {{ item.quantity }})
-        </li>
-    {% endfor %}
-</ul>
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}
+  {% trans "Szczegóły Zamówienia" %} - My Shop
+{% endblock title %}
+
+{% block content %}
+<style>
+    .order-details {
+        max-width: 800px;
+        margin: 2em auto;
+        padding: 1em;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .order-header {
+        border-bottom: 2px solid #333;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    .order-list {
+        list-style: none;
+        padding: 0;
+    }
+    .order-list li {
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+    .order-list li:last-child {
+        border-bottom: none;
+    }
+    .item-name {
+        font-weight: bold;
+        color: #333;
+    }
+    .item-quantity {
+        font-style: italic;
+        color: #555;
+    }
+</style>
+
+<div class="order-details">
+    <div class="order-header">
+        <h2>{% trans "Zamówienie nr" %} {{ order.id }}</h2>
+    </div>
+    <ul class="order-list">
+        {% for item in order.orderitem_set.all %}
+            <li>
+                <span class="item-name">{{ item.product.name }}</span>
+                <span class="item-quantity">({% trans "Ilość" %}: {{ item.quantity }})</span>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock content %}

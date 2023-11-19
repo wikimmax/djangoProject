@@ -1,13 +1,60 @@
-<!-- Example of browse_orders.html -->
-<h2>My Orders</h2>
-<ul>
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}
+  {% trans "Moje Zamówienia" %} - My Shop
+{% endblock title %}
+
+{% block content %}
+<style>
+    .orders-container {
+        max-width: 800px;
+        margin: 2em auto;
+        padding: 1em;
+    }
+    .order-item {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 1em;
+        margin-bottom: 1em;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .order-item strong {
+        color: #333;
+    }
+    .order-item a {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 15px;
+        background-color: #017cff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+    .order-item a:hover {
+        background-color: #0056b3;
+    }
+    .no-orders {
+        text-align: center;
+        padding: 2em;
+    }
+</style>
+
+<div class="orders-container">
+    <h2>{% trans "Moje Zamówienia" %}</h2>
     {% for order in orders %}
-    <li>
-        <strong>Order ID:</strong> {{ order.id }} <br>
-        <strong>Order Date:</strong> {{ order.created_at }} <br>
-        <!-- Add more details as needed -->
-    </li>
+        <div class="order-item">
+            <strong>{% trans "Numer Zamówienia" %}:</strong> {{ order.id }} <br>
+            <strong>{% trans "Data Zamówienia" %}:</strong> {{ order.created_at|date:"Y-m-d H:i" }} <br>
+            <a href="{% url 'order_detail' order.id %}">{% trans "Zobacz szczegóły" %}</a>
+        </div>
     {% empty %}
-    <li>No orders found.</li>
+        <div class="no-orders">
+            <p>{% trans "Nie znaleziono zamówień." %}</p>
+        </div>
     {% endfor %}
-</ul>
+</div>
+{% endblock content %}
