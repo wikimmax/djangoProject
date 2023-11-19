@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load i18n %}
+{% load  %} <!-- Make sure this is included after extending base.html -->
 
 {% block title %}
   {% trans "Twój Koszyk" %} - My Shop
@@ -9,32 +10,59 @@
 {% block content %}
 <style>
     .cart-container {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-direction: column;
-        padding: 2em;
+        max-width: 800px;
+        margin: 2em auto;
+        padding: 1em;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
     .cart-item {
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 1em;
-        margin: 1em;
-        width: 80%; /* Adjust width as needed */
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: box-shadow 0.3s ease;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #eee;
+        padding: 1em 0;
     }
-    .cart-item:hover {
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    .cart-item:last-child {
+        border-bottom: none;
     }
-    .cart-item h3 {
+    .cart-item img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        margin-right: 20px;
+        border-radius: 4px;
+    }
+    .cart-item-details {
+        flex-grow: 1;
+    }
+    .cart-item-details h3 {
+        margin: 0 0 0.5em 0;
+        color: #333;
+    }
+    .cart-item-details p {
         margin: 0;
+        color: #555;
     }
-    .cart-item p {
-        margin: 0.5em 0;
+    .remove-item-btn {
+        padding: 10px 20px;
+        background-color: #ff6b6b;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .remove-item-btn:hover {
+        background-color: #ff3b3b;
+    }
+    .empty-cart-message {
+        text-align: center;
+        padding: 2em;
+        color: #555;
     }
     .place-order-btn {
-        padding: 10px 20px;
+        padding: 15px 30px;
         background-color: #017cff;
         color: white;
         border: none;
@@ -43,18 +71,15 @@
         transition: background-color 0.3s;
         text-decoration: none;
         display: inline-block;
+        margin: 1em 0;
     }
     .place-order-btn:hover {
         background-color: #0056b3;
     }
-    .cart-item img {
-        width: 100px; /* Adjust as needed */
-        height: 100px; /* Adjust as needed */
-        object-fit: cover;
-        margin-right: 20px;
-    }
-    .remove-item-form {
-        margin-left: 20px;
+    .summary-price {
+        text-align: right;
+        font-weight: bold;
+        padding: 1em 0;
     }
 </style>
 
@@ -62,22 +87,27 @@
     {% for item in cart_items %}
         <div class="cart-item">
             <img src="{% if item.product.photo %}{{ item.product.photo.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" alt="{{ item.product.name }}">
-            <div>
+            <div class="cart-item-details">
                 <h3>{{ item.product.name }}</h3>
                 <p>{{ item.product.description }}</p>
-                <p>{% trans "Ilość" %}: {{ item.quantity }}</p>
-                <p>{% trans "Cena" %}: {{ item.product.price }} zł</p>
+                <p><strong>{% trans "Ilość" %}:</strong> {{ item.quantity }}</p>
+                <p><strong>{% trans "Cena" %}:</strong> {{ item.product.price }} zł</p>
             </div>
-            <form action="{% url 'remove_from_cart' item.id %}" method="post">
+            <form action="{% url 'remove_from_cart' item.id %}" method="post" class="remove-item-form">
                 {% csrf_token %}
-                <button type="submit">{% trans "Usuń" %}</button>
+                <button type="submit" class="remove-item-btn">{% trans "Usuń" %}</button>
             </form>
         </div>
     {% empty %}
-        <p>{% trans "Twój koszyk jest pusty." %}</p>
+        <p class="empty-cart-message">{% trans "Twój koszyk jest pusty." %}</p>
     {% endfor %}
-</div>
 
-<a href="{% url 'place_order' %}">{% trans "Złóż zamówienie" %}</a>
+    {% if cart_items %}
+    <div class="summary-price">
+        {% trans "Suma:" %} {{ total_price|floatformat:2 }} zł
+    </div>
+    <a href="{% url 'place_order' %}" class="place-order-btn">{% trans "Złóż zamówienie" %}</a>
+{% endif %}
+</div>
 
 {% endblock content %}

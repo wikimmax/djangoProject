@@ -1,4 +1,5 @@
 from django.db import models
+from django.templatetags.static import static
 
 
 class Product(models.Model):
@@ -6,7 +7,11 @@ class Product(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.IntegerField()
-    photo = models.ImageField(upload_to='product_photos/',null=True, blank=True)
+    photo = models.ImageField(upload_to='products/',null=True, blank=True)
+
+    @property
+    def img_url(self):
+        return static("images/products/{}".format(self.photo))
 
     def __str__(self):
         return self.name

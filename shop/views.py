@@ -30,7 +30,8 @@ def add_to_cart(request, pk):
 
 def cart_detail(request):
     cart_items = Cart.objects.filter(user=request.user)
-    return render(request, 'cart_detail.html', {'cart_items': cart_items})
+    total_price = sum(item.product.price * item.quantity for item in cart_items)
+    return render(request, 'cart_detail.html', {'cart_items': cart_items, 'total_price': total_price})
 
 
 def place_order(request):
@@ -73,3 +74,6 @@ def remove_from_cart(request, cart_item_id):
 def browse_orders(request):
     orders = Order.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'browse_orders.html', {'orders': orders})
+
+
+
