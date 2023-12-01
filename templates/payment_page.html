@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}BLIK Payment{% endblock title %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background: #f9f9f9;">
+    <h2 style="text-align: center;">Płatność BLIK</h2>
+    <p style="text-align: center;">Podaj kod BLIK aby przejść dalej z zamów.</p>
+
+    <form method="post" action="{% url 'process_payment' %}" style="margin-top: 30px;">
+        {% csrf_token %}
+        <div style="text-align: center;">
+            <label for="blik_code" style="display: block; margin-bottom: 10px;">KOD BLIK:</label>
+            <input type="text" id="blik_code" name="blik_code" maxlength="6" pattern="\d{6}" title="Kod blik musi mieć 6 znaków" required style="padding: 10px; width: 200px; border: 1px solid #ccc; border-radius: 4px;">
+        </div>
+        <div style="text-align: center; margin-top: 20px;">
+            <button type="submit" style="padding: 10px 20px; background-color: #017bff; color: white; border: none; border-radius: 5px; cursor: pointer;">Potwierdź płatność</button>
+        </div>
+    </form>
+
+    {% if error_message %}
+        <p style="color: red; text-align: center; margin-top: 20px;">{{ error_message }}</p>
+    {% endif %}
+</div>
+{% endblock content %}

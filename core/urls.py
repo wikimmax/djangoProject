@@ -23,6 +23,8 @@ urlpatterns = [
     path('order/<int:pk>/', views.order_detail, name='order_detail'),
     path('products/<int:pk>/', views.product_detail, name='product_detail'),
     path('browse-orders/', views.browse_orders, name='browse_orders'),
+    path('payment/', views.payment_page, name='payment_page'),
+    path('process-payment/', views.process_payment, name='process_payment'),
 ]
 
 if settings.DEBUG:

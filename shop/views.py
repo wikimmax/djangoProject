@@ -50,6 +50,24 @@ def order_detail(request, pk):
     return render(request, 'order_detail.html', {'order': order})
 
 
+def payment_page(request):
+    return render(request, 'payment_page.html')
+
+
+def process_payment(request):
+    if request.method == 'POST':
+        blik_code = request.POST.get('blik_code')
+        if validate_blik_code(blik_code):
+            return place_order(request)
+        else:
+            return redirect('payment_page')  # Include error message context
+
+
+def validate_blik_code(code):
+    # Simulate BLIK code validation
+    return len(code) == 6 and code.isdigit()
+
+
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -74,6 +92,3 @@ def remove_from_cart(request, cart_item_id):
 def browse_orders(request):
     orders = Order.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'browse_orders.html', {'orders': orders})
-
-
-

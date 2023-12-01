@@ -106,7 +106,7 @@
     <div class="summary-price">
         {% trans "Suma:" %} {{ total_price|floatformat:2 }} zł
     </div>
-    <a href="{% url 'place_order' %}" class="place-order-btn">{% trans "Złóż zamówienie" %}</a>
+    <a href="{% url 'payment_page' %}" class="place-order-btn">Przejdź do płatności</a>
 {% endif %}
 </div>
 
